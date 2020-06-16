@@ -1,1 +1,4 @@
-
+spring:
+  data:
+    mongodb:
+      uri: mongodb://ubuybr:ubuybrpwd@localhost:27017/ubuybr
