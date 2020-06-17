@@ -1,5 +1,6 @@
 package com.ubuybr.ubuybrapi.service;
 
+import com.ubuybr.ubuybrapi.exception.NotFoundException;
 import com.ubuybr.ubuybrapi.model.Product;
 import com.ubuybr.ubuybrapi.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,8 @@ public class ProductService {
     }
 
     public Mono<Product> findById(String id) {
-        return this.productRepository.findById(id);
+        return this.productRepository.findById(id)
+                .switchIfEmpty(Mono.error(new NotFoundException("Produto não encontrado")));
     }
 
     public Flux<Product> findByDescription(String description) {

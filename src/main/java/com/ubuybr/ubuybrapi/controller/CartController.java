@@ -1,6 +1,5 @@
 package com.ubuybr.ubuybrapi.controller;
 
-import com.mongodb.MongoException;
 import com.ubuybr.ubuybrapi.model.Cart;
 import com.ubuybr.ubuybrapi.service.CartService;
 import lombok.extern.slf4j.Slf4j;
