@@ -8,16 +8,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
+@Document("cart")
 @AllArgsConstructor
-@Document("product")
-public class Product {
+public class Cart {
     @Id
-    private String id;
+    public String id;
 
-    @NotEmpty(message = "Product description is mandatory")
-    private String description;
+    @NotEmpty
+    public List<String> productsId;
 }

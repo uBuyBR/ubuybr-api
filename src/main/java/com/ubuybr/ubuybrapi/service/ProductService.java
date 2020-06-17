@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
@@ -20,6 +22,10 @@ public class ProductService {
 
     public Flux<Product> findAll() {
         return this.productRepository.findAll();
+    }
+
+    public Flux<Product> findAllById(List<String> ids) {
+        return this.productRepository.findAllById(ids);
     }
 
     public Mono<Product> findById(String id) {
