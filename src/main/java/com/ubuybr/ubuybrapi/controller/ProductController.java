@@ -35,9 +35,7 @@ public class ProductController {
     public Mono<Product> findById(@PathVariable String id) {
         log.info("Product id {}", id);
         return this.productService.findById(id)
-                .defaultIfEmpty(Product.builder().build());/*
-                .map(product -> ResponseEntity.ok(product))
-                .defaultIfEmpty(ResponseEntity.notFound().build());*/
+                .defaultIfEmpty(Product.builder().build());
     }
 
     @PostMapping

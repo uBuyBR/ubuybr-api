@@ -1,6 +1,7 @@
 package com.ubuybr.ubuybrapi.controller;
 
 import com.ubuybr.ubuybrapi.model.Cart;
+import com.ubuybr.ubuybrapi.model.Product;
 import com.ubuybr.ubuybrapi.service.CartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,12 @@ public class CartController {
     public Mono<Cart> save(@Validated @RequestBody Cart cart) {
         log.info("Cart {}", cart);
         return this.cartService.save(cart);
+    }
+
+    @PostMapping("/{cartId}/product")
+    public Mono<Cart> addProduct(@Validated @RequestBody Product product,
+                                 @PathVariable String cartId) {
+        return this.cartService.addProduct(product, cartId);
     }
 
     @GetMapping

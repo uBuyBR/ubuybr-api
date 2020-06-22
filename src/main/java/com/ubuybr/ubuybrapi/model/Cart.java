@@ -20,5 +20,5 @@ public class Cart {
     public String id;
 
     @NotEmpty
-    public List<String> productsId;
+    public List<Product> products;
 }

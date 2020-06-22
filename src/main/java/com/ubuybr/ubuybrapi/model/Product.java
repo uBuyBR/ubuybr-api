@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
@@ -20,4 +21,7 @@ public class Product {
 
     @NotEmpty(message = "Product description is mandatory")
     private String description;
+
+    @NotNull(message = "Product quantity is mandatory")
+    private int quantity;
 }
