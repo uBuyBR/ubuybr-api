@@ -3,7 +3,6 @@ package com.ubuybr.ubuybrapi.controller;
 import com.ubuybr.ubuybrapi.model.Product;
 import com.ubuybr.ubuybrapi.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
