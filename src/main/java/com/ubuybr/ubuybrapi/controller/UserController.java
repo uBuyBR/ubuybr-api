@@ -17,7 +17,7 @@ public class UserController {
     }
 
     @PostMapping
-    public Mono<User> save(User user) {
+    public Mono<User> save(@RequestBody User user) {
         return userService.save(user);
     }
 

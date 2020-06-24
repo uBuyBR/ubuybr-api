@@ -18,12 +18,12 @@ import java.util.List;
 @AllArgsConstructor
 public class Cart {
     @Id
-    public String id;
+    private String id;
 
-    public User user;
+    private User user;
 
-    public Double amount;
+    private Double value = 0.0;
 
     @NotEmpty
-    public List<Product> products = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();
 }

@@ -4,6 +4,7 @@ import com.ubuybr.ubuybrapi.exception.NotFoundException;
 import com.ubuybr.ubuybrapi.exception.ProductNotAvailableException;
 import com.ubuybr.ubuybrapi.model.Cart;
 import com.ubuybr.ubuybrapi.model.Product;
+import com.ubuybr.ubuybrapi.model.User;
 import com.ubuybr.ubuybrapi.repository.CartRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,19 @@ public class CartService {
 
     private CartRepository cartRepository;
     private ProductService productService;
+    private UserService userService;
 
-    public CartService(CartRepository cartRepository, ProductService productService) {
+    public CartService(CartRepository cartRepository, ProductService productService, UserService userService) {
         this.cartRepository = cartRepository;
         this.productService = productService;
+        this.userService = userService;
     }
 
-    public Mono<Cart> save() {
-        return cartRepository.save(Cart.builder().build());
+    public Mono<Cart> save(String userId) {
+        return userService.findById(userId)
+                .switchIfEmpty(Mono.error(new NotFoundException("Usuário não encontrado")))
+                .flatMap(userFound -> Mono.just(Cart.builder().user(userFound).build()))
+                .flatMap(cart -> cartRepository.save(cart));
     }
 
     public Mono<Cart> addProduct(Product product, String cartId) {
@@ -41,15 +47,23 @@ public class CartService {
                                 productResult.setQuantity(productResult.getQuantity() - product.getQuantity());
                                 return this.productService.save(productResult);
                             })
-                            .flatMap(productSaved -> {
-                                if (!cart.getProducts().isEmpty() && cart.getProducts().stream().anyMatch(product1 -> product1.getId().equals(product.getId()))) {
+                            .flatMap(productSaved -> Mono.just(Product.builder()
+                                                                    .id(productSaved.getId())
+                                                                    .description(productSaved.getDescription())
+                                                                    .quantity(product.getQuantity())
+                                                                    .value(productSaved.getValue())
+                                                                    .build()))
+                            .flatMap(productToAdd -> {
+                                if (!cart.getProducts().isEmpty() && cart.getProducts().stream().anyMatch(cartProduct -> cartProduct.getId().equals(productToAdd.getId()))) {
                                     cart.getProducts()
                                             .stream()
-                                            .filter(cartProduct -> cartProduct.getId().equals(product.getId()))
-                                            .forEach(productFound -> productFound.setQuantity(productFound.getQuantity() + product.getQuantity()));
+                                            .filter(cartProduct -> cartProduct.getId().equals(productToAdd.getId()))
+                                            .forEach(productFound -> productFound.setQuantity(productFound.getQuantity() + productToAdd.getQuantity()));
                                 } else {
-                                    cart.getProducts().add(product);
+                                    cart.getProducts().add(productToAdd);
                                 }
+                                cart.setValue(0.0);
+                                cart.getProducts().stream().forEach(cartProduct -> cart.setValue(cart.getValue()+cartProduct.getValue()*cartProduct.getQuantity()));
 
                                 return Mono.just(cart);
                             }).flatMap(cartRepository::save));

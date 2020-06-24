@@ -24,4 +24,7 @@ public class Product {
 
     @NotNull(message = "Product quantity is mandatory")
     private int quantity;
+
+    @NotNull(message = "Product value is mandatory")
+    private Double value;
 }
