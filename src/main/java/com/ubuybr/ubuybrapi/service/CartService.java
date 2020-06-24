@@ -42,11 +42,13 @@ public class CartService {
                                 return this.productService.save(productResult);
                             })
                             .flatMap(productSaved -> {
-                                if (!cart.getProducts().isEmpty() && cart.getProducts().containsKey(product.getId())) {
-                                    var quantity = cart.getProducts().get(product.getId());
-                                    cart.getProducts().put(product.getId(), quantity + product.getQuantity());
+                                if (!cart.getProducts().isEmpty() && cart.getProducts().stream().anyMatch(product1 -> product1.getId().equals(product.getId()))) {
+                                    cart.getProducts()
+                                            .stream()
+                                            .filter(cartProduct -> cartProduct.getId().equals(product.getId()))
+                                            .forEach(productFound -> productFound.setQuantity(productFound.getQuantity() + product.getQuantity()));
                                 } else {
-                                    cart.getProducts().put(product.getId(), product.getQuantity());
+                                    cart.getProducts().add(product);
                                 }
 
                                 return Mono.just(cart);

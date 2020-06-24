@@ -9,9 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Builder
@@ -22,6 +20,10 @@ public class Cart {
     @Id
     public String id;
 
+    public User user;
+
+    public Double amount;
+
     @NotEmpty
-    public Map<String, Integer> products = new HashMap<>();
+    public List<Product> products = new ArrayList<>();
 }
