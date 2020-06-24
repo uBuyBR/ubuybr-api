@@ -1,7 +1,7 @@
 package com.ubuybr.ubuybrapi.controller;
 
 import com.ubuybr.ubuybrapi.exception.NotFoundException;
-import com.ubuybr.ubuybrapi.exception.ProductNotAvailable;
+import com.ubuybr.ubuybrapi.exception.ProductNotAvailableException;
 import com.ubuybr.ubuybrapi.model.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,8 +24,8 @@ public class ExceptionController {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ProductNotAvailable.class)
-    public ErrorResponse handleNotAvailableException(final NotFoundException ex) {
+    @ExceptionHandler(ProductNotAvailableException.class)
+    public ErrorResponse handleNotAvailableException(final ProductNotAvailableException ex) {
         log.error("ProductNotAvailable", ex);
         return new ErrorResponse(ex.getClass().getSimpleName(), ex.getLocalizedMessage());
     }

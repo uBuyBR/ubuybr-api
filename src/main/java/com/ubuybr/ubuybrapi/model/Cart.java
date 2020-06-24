@@ -8,7 +8,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -20,5 +23,5 @@ public class Cart {
     public String id;
 
     @NotEmpty
-    public List<Product> products;
+    public Map<String, Integer> products = new HashMap<>();
 }

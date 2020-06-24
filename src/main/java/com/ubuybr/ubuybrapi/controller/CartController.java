@@ -20,9 +20,9 @@ public class CartController {
     }
 
     @PostMapping
-    public Mono<Cart> save(@Validated @RequestBody Cart cart) {
-        log.info("Cart {}", cart);
-        return this.cartService.save(cart);
+    public Mono<Cart> save() {
+        log.info("Create a new Empty cart");
+        return this.cartService.save();
     }
 
     @PostMapping("/{cartId}/product")
